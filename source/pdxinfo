@@ -1,0 +1,6 @@
+name=The Cranking of Isaiah
+author=Jon Hubbard
+description=A game made to test Playdate development
+bundleID=com.jhubbard4099.isaiah
+version=0.1
+buildNumber=1
