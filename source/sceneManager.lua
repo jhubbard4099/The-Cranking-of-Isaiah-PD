@@ -1,0 +1,31 @@
+-- Helper file for The Cranking of Isaiah
+-- Contains logic for managing multiple scenes
+
+local pd <const> = playdate
+local gfx <const> = pd.graphics
+
+class('SceneManager').extends()
+
+function SceneManager:switchScene(scene)
+   self.newScene = scene
+
+   self:loadNewScene()
+end
+
+function SceneManager:loadNewScene()
+   self:cleanupScene()
+   self.newScene()
+end
+
+function SceneManager:cleanupScene()
+   gfx.sprite.removeAll()
+   self:removeAllTimers()
+   gfx.setDrawOffset(0, 0)
+end
+
+function SceneManager:removeAllTimers()
+   local allTimers = pd.timer.allTimers()
+   for _, timer in ipairs(allTimers) do
+      timer:remove()
+   end
+end

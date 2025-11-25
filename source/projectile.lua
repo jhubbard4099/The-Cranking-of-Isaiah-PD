@@ -38,7 +38,6 @@ end
 -- Parameters: other - object being collided with
 -- Return: string representing what sort of collision to use
 function Projectile:collisionResponse(other)
-   print(other:getRotation())
    return "overlap"
    -- if other:isA(Projectile) then
    -- 	return "overlap"

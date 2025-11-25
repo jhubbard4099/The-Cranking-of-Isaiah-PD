@@ -4,10 +4,14 @@
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/object"
+import "CoreLibs/timer"
 
-import "player"
-import "projectile"
+import "sceneManager"
+import "gameScene"
 
+SCENE_MANAGER = SceneManager()
+
+GameScene()
 
 ---------------------------
 -- VARIABLES & CONSTANTS --
@@ -23,46 +27,8 @@ MIN_Y, MAX_Y = 0, 240
 MIN_SIZE, MAX_SIZE = 1, 50
 MIN_SPEED, MAX_SPEED = 0, 10
 
--- player info
-local isaiahSprite = Player(200, 120)
-local playerX, playerY = 200, 120
-local playerAngle = 180
-local playerSpeed = 2
-
--- forward declarations
-local inputHandlerGameplay
-local inputHandlerPause
-
 -- debug info
-local displayDebug = true
-
-
---------------------
--- INPUT HANDLERS --
---------------------
-
--- Input handler for main gameplay
-inputHandlerGameplay = {
-   AButtonDown = function()
-      local projectile = Projectile(playerX, playerY, playerAngle, playerSpeed)
-      projectile:add()
-   end,
-
-   BButtonHeld = function()
-      pd.stop()
-      pd.inputHandlers.pop()
-      pd.inputHandlers.push(inputHandlerPause)
-   end
-}
-
--- Input handler for when the game is paused
-inputHandlerPause = {
-   BButtonHeld = function()
-      pd.start()
-      pd.inputHandlers.pop()
-      pd.inputHandlers.push(inputHandlerGameplay)
-   end
-}
+globalDebugDisplay = true
 
 
 ----------------------
@@ -101,34 +67,10 @@ end
 -- Parameters:	toggleBool - bool for if debug is enabled already
 function toggleDebug(toggleBool)
    if (toggleBool) then
-      displayDebug = true
+      globalDebugDisplay = true
    else
-      displayDebug = false
+      globalDebugDisplay = false
    end
-end
-
--- Prints out debug text if displayDebug is true
-function debugText()
-   if (displayDebug) then
-      gfx.setColor(gfx.kColorWhite)
-      gfx.fillRect(0, 0, 150, 80)
-      gfx.setColor(gfx.kColorBlack)
-      gfx.drawRect(0, 0, 150, 80)
-
-      gfx.drawText("speed:", 2, 0)
-      gfx.drawText(playerSpeed, 60, 0)
-
-      gfx.drawText("angle:", 2, 20)
-      gfx.drawText(playerAngle, 60, 20)
-
-      gfx.drawText("coordX:", 2, 40)
-      gfx.drawText(playerX, 60, 40)
-
-      gfx.drawText("coordY:", 2, 60)
-      gfx.drawText(playerY, 60, 60)
-   end
-
-   pd.drawFPS(380, 0)
 end
 
 
@@ -136,53 +78,10 @@ end
 -- MAIN FUNCTIONS --
 --------------------
 
--- Checks if any buttons are pressed and performs the
--- expected actions for ones that are
-function updateButtons()
-   -- check for speed updates
-   -- if (pd.buttonIsPressed("a")) then
-   -- 	playerSpeed += 0.05
-   -- end
-   -- if (pd.buttonIsPressed("b")) then
-   -- 	playerSpeed -= 0.05
-   -- end
-   -- playerSpeed = clamp(playerSpeed, MIN_SPEED, MAX_SPEED)
-
-   -- check for player movement
-   if (pd.buttonIsPressed("right")) then
-      playerX += playerSpeed
-   end
-   if (pd.buttonIsPressed("left")) then
-      playerX -= playerSpeed
-   end
-   playerX = clamp(playerX, MIN_X, MAX_X)
-
-   if (pd.buttonIsPressed("down")) then
-      playerY += playerSpeed
-   end
-   if (pd.buttonIsPressed("up")) then
-      playerY -= playerSpeed
-   end
-   playerY = clamp(playerY, MIN_Y, MAX_Y)
-end
-
 -- Main PD functionality performed every refresh
 function pd.update()
-   -- reset graphics
-   gfx.clear()
-
-   -- run button checks
-   updateButtons()
-
-   -- main test function
-   playerAngle = isaiahSprite:update()
-
-   -- draw player
+   pd.timer.updateTimers()
    gfx.sprite.update()
-   isaiahSprite:moveTo(playerX, playerY)
-
-   -- draw debug info
-   debugText()
 end
 
 
@@ -193,16 +92,11 @@ end
 function init()
    -- set global properties
    pd.display.setRefreshRate(50)
+   pd.drawFPS(380, 0)
 
    -- create system menu options
    local menu = pd.getSystemMenu()
    menu:addCheckmarkMenuItem("Debug", true, toggleDebug)
-
-   -- initate gameplay handlers
-   pd.inputHandlers.push(inputHandlerGameplay)
-
-   -- add initial sprites
-   isaiahSprite:add()
 end
 
 init()

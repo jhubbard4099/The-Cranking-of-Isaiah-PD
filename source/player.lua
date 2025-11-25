@@ -16,6 +16,7 @@ function Player:init(x, y)
 
    self:moveTo(x, y)
    self:setCollideRect( 0, 0, self:getSize() )
+   self.playerSpeed = 2
 
    -- establish original dimensions for later collision calculations
    local width, height = self:getSize()
@@ -27,7 +28,6 @@ end
 -- Parameters: other - object being collided with
 -- Return: string representing what sort of collision to use
 function Player:collisionResponse(other)
-   print(other:getRotation())
    return "overlap"
    -- if other:isA(Projectile) then
    -- 	return "overlap"
