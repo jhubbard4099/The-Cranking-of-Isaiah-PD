@@ -7,11 +7,8 @@ import "CoreLibs/object"
 import "CoreLibs/timer"
 
 import "sceneManager"
-import "gameScene"
+import "mainMenuScene"
 
-SCENE_MANAGER = SceneManager()
-
-MainMenuScene()
 
 ---------------------------
 -- VARIABLES & CONSTANTS --
@@ -26,6 +23,10 @@ MIN_X, MAX_X = 0, 400
 MIN_Y, MAX_Y = 0, 240
 MIN_SIZE, MAX_SIZE = 1, 50
 MIN_SPEED, MAX_SPEED = 0, 10
+
+-- Create global scene manager, then start at main menu
+SCENE_MANAGER = SceneManager()
+MainMenuScene()
 
 -- debug info
 globalDebugDisplay = true

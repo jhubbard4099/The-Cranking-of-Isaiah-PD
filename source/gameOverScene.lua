@@ -1,5 +1,5 @@
 -- Helper file for The Cranking of Isaiah
--- Contains scene logic for main gameplay
+-- Contains scene logic for the game over screen
 
 import "mainMenuScene"
 
@@ -8,7 +8,7 @@ local gfx <const> = pd.graphics
 
 class('GameOverScene').extends(gfx.sprite)
 
--- Game over screne init function
+-- Constructor
 -- Parameters: text - string to display
 function GameOverScene:init(text)
    local gameOverImage = gfx.image.new(gfx.getTextSize(text))
@@ -24,13 +24,14 @@ function GameOverScene:init(text)
    self:add()
 end
 
+-- Handle all button inputs
 function GameOverScene:processButtons()
    if (pd.buttonJustPressed("B")) then
-      SCENE_MANAGER:switchScene(MainMenuScene)
+      SCENE_MANAGER:switchScene(MainMenuScene, "fade")
    end
 end
 
--- Game scene update function
+-- Update function to be run every tick
 function GameOverScene:update()
    gfx.clear()
    self:processButtons()

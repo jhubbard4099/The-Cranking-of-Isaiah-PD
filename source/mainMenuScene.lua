@@ -1,5 +1,6 @@
 -- Helper file for The Cranking of Isaiah
--- Contains scene logic for main gameplay
+-- Contains scene logic for the main menu
+-- TODO: Split main menu logic into its own file
 
 import "CoreLibs/timer"
 import "CoreLibs/ui"
@@ -16,7 +17,7 @@ local mainMenu = pd.ui.gridview.new(0, 32)
 local mainMenuSprite = gfx.sprite.new()
 local menuOptions = {"New Run", "Continue", "Settings", "Credits"}
 
--- Main menu scene init function
+-- Constructor
 function MainMenuScene:init()
    -- local backgroundImage = gfx.image.new("img/background.png")
    -- gfx.sprite.setBackgroundDrawingCallback(function()
@@ -38,11 +39,13 @@ function MainMenuScene:init()
    self:add()
 end
 
+-- Function override for gridview headers
 function mainMenu:drawSectionHeader(section, x, y, width, height)
    local fontHeight = gfx.getSystemFont():getHeight()
    gfx.drawTextAligned("*The Cranking of Isaiah*", x + width / 2, y + (height/2 - fontHeight/2) + 2, kTextAlignment.center)
 end
 
+-- Function override for drawing each gridview cell
 function mainMenu:drawCell(section, row, column, selected, x, y, width, height)
    if selected then
       gfx.fillRoundRect(x, y, width, height, 4)
@@ -55,7 +58,7 @@ function mainMenu:drawCell(section, row, column, selected, x, y, width, height)
    gfx.drawTextInRect(menuOptions[row], x, y + (height/2 - fontHeight/2) + 2, width, height, nil, nil, kTextAlignment.center)
 end
 
-
+-- Handle all button inputs
 function MainMenuScene:processButtons()
    -- handle menu navigation
    if pd.buttonJustPressed("up") then
@@ -66,11 +69,11 @@ function MainMenuScene:processButtons()
 
    -- handle A/B buttons
    if (pd.buttonJustPressed("B")) then
-      SCENE_MANAGER:switchScene(GameScene)
+      SCENE_MANAGER:switchScene(GameScene, "fade")
    end
 end
 
--- Game scene update function
+-- Update function to be run every tick
 function MainMenuScene:update()
    gfx.clear()
    self:processButtons()

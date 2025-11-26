@@ -11,8 +11,7 @@ local gfx <const> = pd.graphics
 class('GameScene').extends(gfx.sprite)
 local player = Player(200, 120)
 
--- Game scene init function
--- Parameters: x, y - coordinates to initialize the player
+-- Constructor
 function GameScene:init()
    -- local backgroundImage = gfx.image.new("img/background.png")
    -- gfx.sprite.setBackgroundDrawingCallback(function()
@@ -23,6 +22,7 @@ function GameScene:init()
    self:add()
 end
 
+-- Handle all button inputs
 function GameScene:processButtons()
    local tempX, tempY = player:getPosition(0)
 
@@ -49,7 +49,7 @@ function GameScene:processButtons()
 
    -- handle A/B buttons
    if (pd.buttonJustPressed("B")) then
-      SCENE_MANAGER:switchScene(GameOverScene, "*YOU DIED*")
+      SCENE_MANAGER:switchScene(GameOverScene, "wipe", "*YOU DIED*")
    end
    if (pd.buttonJustPressed("A")) then
       tempX, tempY = player:getPosition(0)
@@ -61,7 +61,7 @@ function GameScene:processButtons()
    end
 end
 
--- Game scene update function
+-- Update function to be run every tick
 function GameScene:update()
    gfx.clear()
    self:processButtons()
