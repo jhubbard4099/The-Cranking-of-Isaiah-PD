@@ -3,6 +3,7 @@
 
 import "player"
 import "projectile"
+import "gameOverScene"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
@@ -10,13 +11,13 @@ local gfx <const> = pd.graphics
 class('GameScene').extends(gfx.sprite)
 local player = Player(200, 120)
 
--- Player init function
+-- Game scene init function
 -- Parameters: x, y - coordinates to initialize the player
-function GameScene:init(x, y)
-   local backgroundImage = gfx.image.new("img/background.png")
-   gfx.sprite.setBackgroundDrawingCallback(function()
-      backgroundImage:draw(0, 0)
-   end)
+function GameScene:init()
+   -- local backgroundImage = gfx.image.new("img/background.png")
+   -- gfx.sprite.setBackgroundDrawingCallback(function()
+   --    backgroundImage:draw(0, 0)
+   -- end)
 
    player:add()
    self:add()
@@ -47,20 +48,16 @@ function GameScene:processButtons()
    player:moveTo(tempX, tempY)
 
    -- handle A/B buttons
-   if isPaused then
-      if (pd.buttonJustPressed("B")) then
-         -- TODO
-         -- pd.start()
-      end
-   else
-      if (pd.buttonJustPressed("A")) then
-         tempX, tempY = player:getPosition(0)
-         local projectile = Projectile(tempX, tempY, player:getRotation(), player.playerSpeed)
-         projectile:add()
-      elseif (pd.buttonJustPressed("B")) then
-         -- TODO
-         -- pd.stop()
-      end
+   if (pd.buttonJustPressed("B")) then
+      SCENE_MANAGER:switchScene(GameOverScene, "*YOU DIED*")
+   end
+   if (pd.buttonJustPressed("A")) then
+      tempX, tempY = player:getPosition(0)
+      local projectile = Projectile(tempX, tempY, player:getRotation(), player.playerSpeed)
+      projectile:add()
+   elseif (pd.buttonJustPressed("B")) then
+      -- TODO
+      -- pd.stop()
    end
 end
 

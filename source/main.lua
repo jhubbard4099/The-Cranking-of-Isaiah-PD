@@ -11,7 +11,7 @@ import "gameScene"
 
 SCENE_MANAGER = SceneManager()
 
-GameScene()
+MainMenuScene()
 
 ---------------------------
 -- VARIABLES & CONSTANTS --

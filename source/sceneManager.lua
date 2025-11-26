@@ -6,15 +6,16 @@ local gfx <const> = pd.graphics
 
 class('SceneManager').extends()
 
-function SceneManager:switchScene(scene)
+function SceneManager:switchScene(scene, ...)
    self.newScene = scene
+   self.sceneArgs = ...
 
    self:loadNewScene()
 end
 
 function SceneManager:loadNewScene()
    self:cleanupScene()
-   self.newScene()
+   self.newScene(self.sceneArgs)
 end
 
 function SceneManager:cleanupScene()
