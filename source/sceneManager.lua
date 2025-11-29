@@ -6,6 +6,8 @@ local gfx <const> = pd.graphics
 
 class('SceneManager').extends()
 
+local transitionTypes = {"fade", "wipe"}
+
 -- Constructor
 function SceneManager:init()
    self.transitionTime = 500
@@ -25,7 +27,12 @@ function SceneManager:switchScene(scene, transitionType, ...)
    self.newScene = scene
    self.sceneArgs = ...
 
-   self:startTransition(transitionType)
+   local containsType = table.indexOfElement(transitionTypes, transitionType)
+   if containsType then
+      self:startTransition(transitionType)
+   else
+      self:loadNewScene()
+   end
 end
 
 -- Cleans up current scene, then establishes new scene

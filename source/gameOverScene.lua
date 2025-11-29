@@ -27,7 +27,7 @@ end
 -- Handle all button inputs
 function GameOverScene:processButtons()
    if (pd.buttonJustPressed("B")) then
-      SCENE_MANAGER:switchScene(MainMenuScene, "fade")
+      SCENE_MANAGER:switchScene(MainMenuScene, "none")
    end
 end
 
